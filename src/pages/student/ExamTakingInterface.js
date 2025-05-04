@@ -269,7 +269,7 @@ function ExamTakingInterface() {
             document.documentElement.removeEventListener('mouseleave', handleMouseLeave);
             if(leaveWarningTimeoutId.current) clearTimeout(leaveWarningTimeoutId.current); // Cleanup timeout
         };
-    }, [isExamCancelled, isLoading, examDetails]); // Re-attach listener if exam status changes
+    }, [isExamCancelled, isLoading, examDetails, reportCancellationToBackend]); // Re-attach listener if exam status changes
 
 
     // Tab Switch / Visibility Change Detection Effect
@@ -305,7 +305,7 @@ function ExamTakingInterface() {
             document.removeEventListener('visibilitychange', handleVisibilityChange);
             if (tabSwitchWarningTimeoutId.current) clearTimeout(tabSwitchWarningTimeoutId.current); // Cleanup timeout
         };
-    }, [isExamCancelled, isLoading, examDetails]); // Re-attach listener if exam status changes
+    }, [isExamCancelled, isLoading, examDetails, reportCancellationToBackend]); // Re-attach listener if exam status changes
 
 
     // --- Frame Capture and Analysis Effect ---
@@ -650,7 +650,9 @@ function ExamTakingInterface() {
                 cancelMessage = `This exam session has been cancelled due to proctoring violations. (Last Warning: ${cheatingWarningMsg || 'Multiple warnings'})`;
                 icon = <FaceRetouchingOffIcon sx={{ fontSize: 80, color: 'error.main', mb: 2 }} />;
                 break;
-            // Add cases for other potential reasons like 'camera_error' if implemented
+            default:
+            console.warn(`Unhandled cancellationReason: ${cancellationReason}`);
+            break;
          }
 
          return (

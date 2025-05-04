@@ -220,7 +220,7 @@ function ExamSubmittedPage() {
 
         return () => { isMounted = false; };
     // Dependency array: refetch if examId changes. pageData.examDetails is removed to prevent potential loop if error sets it to null.
-    }, [examId]);
+    }, [examId, pageData.examDetails]); 
 
 
     // --- Event Handlers ---
