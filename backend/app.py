@@ -138,7 +138,7 @@ def create_app(config_class=Config):
     db.init_app(app)
 
     # Initialize CORS
-    CORS(app, resources={r"/api/*": {"origins": ["http://localhost:3000", "http://127.0.0.1:3000", "https://GabriellaErlinda.github.io"], # Allow both localhost and 127.0.0.1 for dev
+    CORS(app, resources={r"/api/*": {"origins": ["http://localhost:3000", "http://127.0.0.1:3000", "https://intellixam.vercel.app"], # Allow both localhost and 127.0.0.1 for dev
                                 "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
                                 "allow_headers": ["Content-Type", "Authorization"],
                                 "supports_credentials": True }}) # Often needed if frontend sends cookies/auth
