@@ -1,10 +1,10 @@
 import axios from 'axios';
 
 // Base URL for your backend API
-const API_URL = 'http://localhost:5001/api'; // Your Flask backend URL
+// const API_URL = 'http://localhost:5001/api'; // Your Flask backend URL
 
 const apiClient = axios.create({
-  baseURL: API_URL,
+  baseURL: '/api',
   headers: {
     'Content-Type': 'application/json',
   },
