@@ -138,7 +138,7 @@ def create_app(config_class=Config):
     db.init_app(app)
 
     # Initialize CORS
-    CORS(app, resources={r"/api/*": {"origins": ["http://localhost:3000", "http://127.0.0.1:3000"], # Allow both localhost and 127.0.0.1 for dev
+    CORS(app, resources={r"/api/*": {"origins": ["http://localhost:3000", "http://127.0.0.1:3000", "https://GabriellaErlinda.github.io"], # Allow both localhost and 127.0.0.1 for dev
                                 "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
                                 "allow_headers": ["Content-Type", "Authorization"],
                                 "supports_credentials": True }}) # Often needed if frontend sends cookies/auth
@@ -1492,12 +1492,13 @@ def create_app(config_class=Config):
     return app
 
 # --- Run the Flask Development Server ---
-if __name__ == '__main__':
-    flask_app = create_app()
+#if __name__ == '__main__':
+#    flask_app = create_app()
     # --- IMPORTANT ---
     # Ensure Application Default Credentials (ADC) are set up before running
     # if using the Cloud SQL Connector (which is recommended).
     # Run `gcloud auth application-default login` in your terminal environment.
     # The service account used in deployment needs the 'Cloud SQL Client' IAM role.
     # ---
-    flask_app.run(host='0.0.0.0', debug=True, port=5001, threaded=True, use_reloader=True)
+ #   flask_app.run(host='0.0.0.0', debug=True, port=5001, threaded=True, use_reloader=True)
+app = create_app()
