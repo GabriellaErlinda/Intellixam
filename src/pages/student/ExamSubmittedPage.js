@@ -2,11 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
-    Box, Typography, Paper, Button, Divider, CircularProgress, Alert, Link as MuiLink, Grid, List, ListItem, ListItemText, IconButton, Tooltip // Import MUI components
+    Box, Typography, Paper, Button, Divider, CircularProgress, Alert, Link as IconButton, Tooltip // Import MUI components
 } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import ReplayIcon from '@mui/icons-material/Replay';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import VisibilityIcon from '@mui/icons-material/Visibility';

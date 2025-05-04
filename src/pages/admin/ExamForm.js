@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Papa from 'papaparse';
 import {
     Box, Typography, TextField, Button, Paper, Grid, Select, MenuItem, FormControl,
-    InputLabel, IconButton, Divider, List, ListItem, ListItemText, RadioGroup,
+    InputLabel, IconButton, Divider, List, RadioGroup,
     FormControlLabel, Radio, Alert, CircularProgress, Tooltip, Chip, // Added Chip for multi-select render
     OutlinedInput // Added OutlinedInput for Select label compatibility
 } from '@mui/material';
@@ -15,20 +15,6 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import apiClient from '../../api'; // Adjust path as needed
 
-// Helper function to format date-time (if needed elsewhere, keep it)
-const formatDateTimeForInput = (isoString) => {
-    if (!isoString) return '';
-    try {
-        const date = new Date(isoString);
-        if (isNaN(date.getTime())) { throw new Error("Invalid date string"); }
-        const offset = date.getTimezoneOffset() * 60000;
-        const localDate = new Date(date.getTime() - offset);
-        return localDate.toISOString().slice(0, 16);
-    } catch (e) {
-        console.error("Error formatting date for input:", isoString, e);
-        return '';
-    }
-};
 
 // Counter for temporary unique keys for new questions
 let tempQuestionIdCounter = 0;

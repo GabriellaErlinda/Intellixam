@@ -1,7 +1,7 @@
 // src/pages/student/StudentDashboard.js
 import React, { useState, useEffect, useMemo } from 'react';
 import {
-    Grid, Card, CardContent, Typography, Box, List, ListItem, ListItemText,
+    Grid, Typography, Box, List, ListItem, ListItemText,
     Divider, Paper, Chip, CircularProgress, Alert, Button
 } from '@mui/material';
 import EventIcon from '@mui/icons-material/Event';

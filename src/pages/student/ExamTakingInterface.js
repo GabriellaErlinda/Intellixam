@@ -5,11 +5,8 @@ import {
     Box, Typography, Paper, Button, RadioGroup, FormControlLabel, Radio,
     CircularProgress, Alert, Dialog, DialogTitle, DialogContent,
     DialogContentText, DialogActions, LinearProgress, useTheme, Divider, FormControl,
-    IconButton, // Added for flag button
     Tooltip // Added for flag button clarity
 } from '@mui/material';
-// Import necessary icons
-// import VideocamIcon from '@mui/icons-material/Videocam'; // Not explicitly used in final UI render?
 import VideocamOffIcon from '@mui/icons-material/VideocamOff';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
@@ -17,9 +14,6 @@ import FaceRetouchingOffIcon from '@mui/icons-material/FaceRetouchingOff';
 import GroupsIcon from '@mui/icons-material/Groups';
 import FlagIcon from '@mui/icons-material/Flag'; // Icon for Flagged
 import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined'; // Icon for Not Flagged
-// import CheckCircleIcon from '@mui/icons-material/CheckCircle'; // Not used directly in legend, implied by color
-// import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'; // Not used directly in legend, implied by color
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline'; // Icon for Current
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'; // Icon for submission error feedback
 
 // Import API client
