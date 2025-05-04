@@ -1,0 +1,17 @@
+{
+    "functions": {
+      "backend/**/*.py": {
+        "runtime": "python3.11" 
+      }
+    },
+    "rewrites": [
+      {
+        "source": "/api/(.*)",
+        "destination": "/backend/index"
+      },
+      {
+        "source": "/((?!api/|_next/|static/|favicon\\.ico|manifest\\.json|robots\\.txt|.*\\.\\w+).*)",
+        "destination": "/index.html"
+      }
+    ]
+  }
