@@ -1501,4 +1501,4 @@ def create_app(config_class=Config):
     # The service account used in deployment needs the 'Cloud SQL Client' IAM role.
     # ---
  #   flask_app.run(host='0.0.0.0', debug=True, port=5001, threaded=True, use_reloader=True)
-app = create_app()
+# app = create_app()
