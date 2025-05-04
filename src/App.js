@@ -155,7 +155,7 @@ function App() {
   return (
     // 3. Provide the authentication state and functions to the rest of the app
     <AuthContext.Provider value={{ ...authState, login: handleLogin, logout: handleLogout }}>
-      <Router>
+      <Router basename="/Intellixam">
         <Routes>
           {/* --- Public Routes (Accessible without login) --- */}
           <Route
