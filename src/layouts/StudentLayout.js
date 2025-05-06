@@ -146,7 +146,7 @@ function StudentLayout({ onLogout }) {
                        <Tooltip title="User Options">
                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                {/* Placeholder Avatar */}                               
-                                <Avatar sx={{background: `linear-gradient(45deg, #7b4dff 30%, #3da9fc 90%)`, color: '#fff', fontSize: '3rem' }}>
+                                <Avatar sx={{background: `linear-gradient(45deg, #7b4dff 30%, #3da9fc 90%)`, color: '#fff', fontSize: '1.5rem' }}>
                                     <PersonIcon fontSize="inherit"/>
                                 </Avatar>
                            </IconButton>
