@@ -9,8 +9,7 @@ import {
 // Import necessary student menu icons
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
-import HistoryIcon from '@mui/icons-material/History'; // If using Results page
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'; // <-- IMPORTED Profile icon
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 // Import common icons
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -47,7 +46,6 @@ function StudentLayout({ onLogout }) {
     const menuItems = [
         { text: 'Dashboard', icon: <DashboardIcon />, path: '/student' },
         { text: 'Available Exams', icon: <AssignmentTurnedInIcon />, path: '/student/exams' },
-        // Uncomment 'My Results' if you implement the corresponding page/route
         // { text: 'My Results', icon: <HistoryIcon />, path: '/student/results' },
     ];
 
@@ -148,7 +146,9 @@ function StudentLayout({ onLogout }) {
                        <Tooltip title="User Options">
                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                {/* Placeholder Avatar */}
-                               <Avatar sx={{ bgcolor: theme.palette.primary.main }}>S</Avatar> {/* Replace 'S' with user initial if available */}
+                                <Avatar sx={{ width: { xs: 80, sm: 100, md: 120 }, height: { xs: 80, sm: 100, md: 120 }, background: `linear-gradient(45deg, #7b4dff 30%, #3da9fc 90%)`, color: '#fff', fontSize: '3rem' }}>
+                                    {profileData.username ? profileData.username.charAt(0).toUpperCase() : <PersonIcon fontSize="inherit"/>}
+                                </Avatar>
                            </IconButton>
                        </Tooltip>
                        <Menu
