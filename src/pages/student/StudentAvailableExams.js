@@ -7,6 +7,7 @@ import {
 } from '@mui/material';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'; // Untuk tombol di Completed
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import VisibilityIcon from '@mui/icons-material/Visibility'; // Icon untuk tombol detail submit
 import HistoryIcon from '@mui/icons-material/History'; // Icon untuk judul history
 import { format } from 'date-fns'; // Untuk format tanggal

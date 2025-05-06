@@ -1,6 +1,6 @@
 // src/App.js
 import React, { useState, useEffect, createContext, useContext } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 
 // Import Layouts
 import AdminLayout from './layouts/AdminLayout';

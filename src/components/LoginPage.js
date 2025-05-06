@@ -126,18 +126,14 @@ function LoginPage() {
               {/* Placeholder for Forgot Password link */}
               {/* <Link href="#" variant="body2"> Forgot password? </Link> */}
             </Grid>
-            <Grid item>
-              {/* Link to Sign Up page using React Router */}
-              <Link component={RouterLink} to="/signup" variant="body2">
-                {"Don't have an account? Sign Up (Student)"}
-              </Link>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link component={RouterLink} to="/signup" variant="body2">
+                  {"Don't have an account? Sign Up (Student)"}
+                </Link>
+              </Grid>
             </Grid>
           </Grid>
-
-          {/* Helper text for default credentials */}
-           <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 3 }}>
-             Use 'admin'/'admin123' or login as a student.
-           </Typography>
         </Box>
       </Paper>
 
@@ -145,7 +141,7 @@ function LoginPage() {
        <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 5 }}>
          {'© '}
          <Link color="inherit" href="#"> {/* Replace with your app name/link */}
-           Kelompok 2 Capstone Project
+           Intellixam
          </Link>{' '}
          {new Date().getFullYear()}
          {'.'}

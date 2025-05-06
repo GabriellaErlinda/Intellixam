@@ -9,6 +9,7 @@ import {
 // Import necessary student menu icons
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import HistoryIcon from '@mui/icons-material/History'; // If using Results page
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'; // <-- IMPORTED Profile icon
 // Import common icons
 import MenuIcon from '@mui/icons-material/Menu';

@@ -77,6 +77,7 @@ function UserManagement() {
         setError('');
         try {
             const response = await apiClient.get('/admin/usergroups');
+            console.log(response.data); // Debugging line to check the response
             setGroups(response.data || []);
         } catch (err) {
             setError(err.message || 'Failed to fetch user groups.');

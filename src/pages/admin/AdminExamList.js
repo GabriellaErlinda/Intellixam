@@ -17,6 +17,16 @@ import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { useNavigate } from 'react-router-dom';
 import apiClient from '../../api';
 
+// Helper function (remains the same)
+const formatDisplayDateTime = (isoString) => {
+    // ... (implementation unchanged)
+    if (!isoString) return 'N/A';
+    try {
+        return new Date(isoString).toLocaleString();
+    } catch (e) {
+        return 'Invalid Date';
+    }
+};
 
 // Status Chip function - Updated Styling
 const getStatusChip = (status) => {

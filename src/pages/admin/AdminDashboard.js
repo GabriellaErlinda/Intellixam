@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     Grid, Card, CardContent, Typography, Button, Box, Paper, Avatar,
-    CircularProgress, Alert, List, ListItem, ListItemText, Divider
+    CircularProgress, Alert, List, ListItem, ListItemText, Divider, Tooltip, IconButton
 } from '@mui/material';
 // Import Icons
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -79,6 +79,9 @@ function AdminDashboard() {
     const [notifications, setNotifications] = useState([]);
     const [isNotificationsLoading, setIsNotificationsLoading] = useState(true);
     const [notificationError, setNotificationError] = useState(null);
+
+    // Combined Loading State (optional, for overall skeleton/indicator)
+    const isLoading = isStatsLoading || isNotificationsLoading;
 
     // Fetch Data on Component Mount
     useEffect(() => {
