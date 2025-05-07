@@ -450,20 +450,21 @@ function UserManagement() {
                             <TableCell>Class Name</TableCell>
                             <TableCell>Description</TableCell>
                             <TableCell align="right">Students</TableCell>
+                            <TableCell align="center">View Students</TableCell> {/* New Column Header */}
                             <TableCell align="center">Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {isLoadingGroups ? (
                             <TableRow>
-                                <TableCell colSpan={4} align="center" sx={{ py: 4 }}>
+                                <TableCell colSpan={5} align="center" sx={{ py: 4 }}> {/* Adjusted colSpan */}
                                     <CircularProgress />
                                 </TableCell>
                             </TableRow>
                         // Use displayedGroups here and check searchTerm for message
                         ) : displayedGroups.length === 0 && !error ? (
                              <TableRow>
-                                <TableCell colSpan={4} align="center" sx={{ py: 4, color: 'text.secondary' }}>
+                                <TableCell colSpan={5} align="center" sx={{ py: 4, color: 'text.secondary' }}> {/* Adjusted colSpan */}
                                     {searchTerm
                                         ? `No class found matching "${searchTerm}".`
                                         : 'No class found. Create one to get started.'}
@@ -482,18 +483,27 @@ function UserManagement() {
                                     </TableCell>
                                     <TableCell>{group.description || '-'}</TableCell>
                                     <TableCell align="right">{group.student_count ?? 'N/A'}</TableCell>
+                                    <TableCell align="center"> {/* New Column Cell */}
+                                        <Button
+                                            variant="outlined"
+                                            size="small"
+                                            onClick={() => handleOpenDetailsModal(group)}
+                                        >
+                                            View Students
+                                        </Button>
+                                    </TableCell>
                                     <TableCell align="center">
-                                         <Tooltip title="View Details & Members">
+                                         <Tooltip title="View Details & Members (Legacy - use View Students button)">
                                             <IconButton onClick={() => handleOpenDetailsModal(group)} color="primary" size="small">
                                                 <VisibilityIcon fontSize="small"/>
                                             </IconButton>
                                         </Tooltip>
-                                        <Tooltip title="Edit Group">
+                                        <Tooltip title="Edit Class">
                                             <IconButton onClick={() => handleOpenEditModal(group)} color="secondary" size="small">
                                                 <EditIcon fontSize="small"/>
                                             </IconButton>
                                         </Tooltip>
-                                        <Tooltip title="Delete Group">
+                                        <Tooltip title="Delete Class">
                                             <IconButton onClick={() => openDeleteConfirm(group)} color="error" size="small">
                                                 <DeleteIcon fontSize="small"/>
                                             </IconButton>
@@ -505,7 +515,7 @@ function UserManagement() {
                          {/* Display global table loading error */}
                          {error && !isLoadingGroups && groups.length === 0 && ( // Only show if group list is empty due to error
                             <TableRow>
-                                <TableCell colSpan={4} align="center" sx={{ py: 4, color: 'error.main' }}>
+                                <TableCell colSpan={5} align="center" sx={{ py: 4, color: 'error.main' }}> {/* Adjusted colSpan */}
                                    {`Error loading groups: ${error}`}
                                 </TableCell>
                             </TableRow>
