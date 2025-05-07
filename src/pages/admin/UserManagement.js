@@ -438,7 +438,7 @@ function UserManagement() {
                         textTransform: 'none'
                     }}
                  >
-                    New Group
+                    New Class
                  </Button>
             </Paper>
 
@@ -489,15 +489,10 @@ function UserManagement() {
                                             size="small"
                                             onClick={() => handleOpenDetailsModal(group)}
                                         >
-                                            View Students
+                                            <VisibilityIcon fontSize="small"/>View Students
                                         </Button>
                                     </TableCell>
                                     <TableCell align="center">
-                                         <Tooltip title="View Details & Members (Legacy - use View Students button)">
-                                            <IconButton onClick={() => handleOpenDetailsModal(group)} color="primary" size="small">
-                                                <VisibilityIcon fontSize="small"/>
-                                            </IconButton>
-                                        </Tooltip>
                                         <Tooltip title="Edit Class">
                                             <IconButton onClick={() => handleOpenEditModal(group)} color="secondary" size="small">
                                                 <EditIcon fontSize="small"/>
