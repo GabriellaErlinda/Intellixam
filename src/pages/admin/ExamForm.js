@@ -459,8 +459,8 @@ function ExamForm() {
                     {/* Input Fields */}
                     <Grid item xs={12} md={6}><TextField fullWidth required name="name" label="Exam Name" value={examDetails.name} onChange={handleDetailChange} disabled={isSaving} /></Grid>
                     <Grid item xs={12} md={6}><TextField fullWidth required name="subject" label="Subject" value={examDetails.subject} onChange={handleDetailChange} disabled={isSaving} /></Grid>
-                    <Grid item xs={12} sm={6} md={3}><TextField fullWidth required name="duration" label="Duration (min)" type="number" value={examDetails.duration} onChange={handleDetailChange} disabled={isSaving} InputProps={{ inputProps: { min: 1 } }} /></Grid>
-                    <Grid item xs={12} sm={6} md={3}><TextField fullWidth required name="allowed_attempts" label="Allowed Attempts" type="number" value={examDetails.allowed_attempts} onChange={handleDetailChange} disabled={isSaving} InputProps={{ inputProps: { min: 1 } }} /></Grid>
+                    <Grid item xs={12} sm={6} md={2}><TextField fullWidth required name="duration" label="Duration (min)" type="number" value={examDetails.duration} onChange={handleDetailChange} disabled={isSaving} InputProps={{ inputProps: { min: 1 } }} /></Grid>
+                    <Grid item xs={12} sm={6} md={2}><TextField fullWidth required name="allowed_attempts" label="Allowed Attempts" type="number" value={examDetails.allowed_attempts} onChange={handleDetailChange} disabled={isSaving} InputProps={{ inputProps: { min: 1 } }} /></Grid>
                     <Grid item xs={12} sm={6} md={3}>
                         <FormControl fullWidth required disabled={isSaving}>
                             <InputLabel id="status-select-label">Status</InputLabel>
@@ -473,7 +473,7 @@ function ExamForm() {
                     </Grid>
 
                     {/* Assign to Groups Select */}
-                    <Grid item xs={12} sm={6} md={3}>
+                    <Grid item xs={12} sm={6} md={5}>
                         <FormControl fullWidth disabled={isSaving || isLoadingGroups}>
                             <InputLabel id="assign-groups-label">Assign to Groups (Optional)</InputLabel>
                             <Select labelId="assign-groups-label" id="assign-groups-select" multiple value={selectedGroupIds} onChange={handleGroupSelectionChange}
