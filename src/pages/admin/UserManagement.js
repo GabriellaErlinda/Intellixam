@@ -1,35 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import apiClient from '../../api'; // Adjust path as needed
 import {
-    Box,
-    Button,
-    Typography,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Paper,
-    IconButton,
-    CircularProgress,
-    Alert,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    TextField,
-    Tooltip,
-    List,
-    ListItem,
-    ListItemText,
-    ListItemSecondaryAction,
-    Select,
-    MenuItem,
-    FormControl,
-    InputLabel,
-    InputAdornment,
+    Box,Button,Typography,Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,IconButton,CircularProgress,Alert,
+    Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle,TextField,Tooltip,List,ListItem,
+    ListItemText,ListItemSecondaryAction,Select,MenuItem,FormControl,InputLabel,InputAdornment,
     useTheme, // Import useTheme
 } from '@mui/material';
 import {
@@ -207,7 +181,7 @@ function UserManagement() {
     const handleCreateGroup = async (event) => {
         event.preventDefault();
         if (!newGroupName.trim()) {
-            setError('Group name cannot be empty.');
+            setError('Class name cannot be empty.');
             return;
         }
         setIsSubmitting(true);
@@ -225,13 +199,13 @@ function UserManagement() {
             // Update state directly
             setGroups(prevGroups => [...prevGroups, newGroupData]);
 
-            setSuccessMessage(`Group '${newGroupData.name}' created successfully.`); // Use name from response
+            setSuccessMessage(`Class '${newGroupData.name}' created successfully.`); // Use name from response
             handleCloseCreateModal();
             // fetchGroups(); // No longer strictly necessary
 
         } catch (err) {
             // Display error within the modal
-            setError(err.message || 'Failed to create group.');
+            setError(err.message || 'Failed to create class.');
         } finally {
             setIsSubmitting(false);
         }
@@ -241,7 +215,7 @@ function UserManagement() {
     const handleUpdateGroup = async (event) => {
         event.preventDefault();
         if (!groupToEdit || !newGroupName.trim()) {
-            setError('Group name cannot be empty.');
+            setError('Class name cannot be empty.');
             return;
         }
         setIsSubmitting(true);
@@ -255,7 +229,7 @@ function UserManagement() {
             });
             const updatedGroupData = response.data; // Backend sends back updated group
 
-            setSuccessMessage(`Group '${updatedGroupData.name}' updated successfully.`);
+            setSuccessMessage(`Class '${updatedGroupData.name}' updated successfully.`);
             handleCloseEditModal();
 
              // Update the groups list state with the data returned from backend
@@ -273,7 +247,7 @@ function UserManagement() {
             }
         } catch (err) {
              // Display error within the modal
-            setError(err.message || 'Failed to update group.');
+            setError(err.message || 'Failed to update class.');
         } finally {
             setIsSubmitting(false);
         }
@@ -290,7 +264,7 @@ function UserManagement() {
             const deletedGroupName = groupToDelete.name; // Store name before clearing
             const deletedGroupId = groupToDelete.id; // Store ID before clearing
 
-            setSuccessMessage(`Group '${deletedGroupName}' deleted successfully.`);
+            setSuccessMessage(`Class '${deletedGroupName}' deleted successfully.`);
             closeDeleteConfirm(); // Close confirmation FIRST
 
             // Update groups list by filtering out the deleted one
@@ -305,7 +279,7 @@ function UserManagement() {
              // fetchGroups(); // Not needed with direct state update
         } catch (err) {
             // Display error within the confirmation dialog
-            setError(err.message || 'Failed to delete group.');
+            setError(err.message || 'Failed to delete class.');
             // Keep the dialog open on error so the user sees the message
         } finally {
             setIsSubmitting(false);
@@ -343,7 +317,7 @@ function UserManagement() {
             handleCloseAddStudentModal(); // Close this modal on success
         } catch (err) {
             // Display error within the Add Student modal
-            setError(err.message || 'Failed to add student to group.');
+            setError(err.message || 'Failed to add student to class.');
         } finally {
             setIsSubmitting(false);
         }
@@ -372,7 +346,7 @@ function UserManagement() {
             closeRemoveStudentConfirm(); // Close confirmation dialog
         } catch (err) {
             // Display error within the confirmation dialog
-            setError(err.message || 'Failed to remove student from group.');
+            setError(err.message || 'Failed to remove student from class.');
              // Keep the dialog open on error so the user sees the message
         } finally {
             setIsSubmitting(false);
@@ -396,7 +370,7 @@ function UserManagement() {
     return (
         <Box sx={{ p: 3 }}>
             <Typography variant="h4" gutterBottom>
-                User Group Management
+                Class Management
             </Typography>
 
              {/* --- Global Error/Success Messages (outside modals) --- */}
@@ -426,7 +400,7 @@ function UserManagement() {
                  <TextField
                     variant="outlined"
                     size="small"
-                    placeholder="Search group..."
+                    placeholder="Search class..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     InputProps={{
@@ -451,7 +425,7 @@ function UserManagement() {
                             },
                           },
                     }}
-                    aria-label="Search group"
+                    aria-label="Search class"
                  />
                  <Button
                     variant="contained"
@@ -470,12 +444,12 @@ function UserManagement() {
 
             {/* --- Groups Table --- */}
             <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="user groups table">
+                <Table sx={{ minWidth: 650 }} aria-label="class table">
                     <TableHead>
                         <TableRow sx={{ '& th': { fontWeight: 'bold', bgcolor: 'action.hover' } }}>
-                            <TableCell>Group Name</TableCell>
+                            <TableCell>Class Name</TableCell>
                             <TableCell>Description</TableCell>
-                            <TableCell align="right">Members</TableCell>
+                            <TableCell align="right">Students</TableCell>
                             <TableCell align="center">Actions</TableCell>
                         </TableRow>
                     </TableHead>
@@ -491,8 +465,8 @@ function UserManagement() {
                              <TableRow>
                                 <TableCell colSpan={4} align="center" sx={{ py: 4, color: 'text.secondary' }}>
                                     {searchTerm
-                                        ? `No groups found matching "${searchTerm}".`
-                                        : 'No user groups found. Create one to get started.'}
+                                        ? `No class found matching "${searchTerm}".`
+                                        : 'No class found. Create one to get started.'}
                                 </TableCell>
                             </TableRow>
                         // Use displayedGroups here
@@ -544,10 +518,10 @@ function UserManagement() {
 
             {/* --- Create Group Modal --- */}
             <Dialog open={showCreateModal} onClose={handleCloseCreateModal} >
-                <DialogTitle>Create New User Group</DialogTitle>
+                <DialogTitle>Create New Class</DialogTitle>
                 <Box component="form" onSubmit={handleCreateGroup}>
                     <DialogContent>
-                        <TextField autoFocus margin="dense" id="new-group-name" label="Group Name" type="text" fullWidth variant="outlined" value={newGroupName} onChange={(e) => setNewGroupName(e.target.value)} required sx={{ mb: 2 }} error={!!error && error.includes('name')} helperText={error && error.includes('name') ? error : ''} />
+                        <TextField autoFocus margin="dense" id="new-group-name" label="Class Name" type="text" fullWidth variant="outlined" value={newGroupName} onChange={(e) => setNewGroupName(e.target.value)} required sx={{ mb: 2 }} error={!!error && error.includes('name')} helperText={error && error.includes('name') ? error : ''} />
                         <TextField margin="dense" id="new-group-desc" label="Description (Optional)" type="text" fullWidth multiline rows={3} variant="outlined" value={newGroupDesc} onChange={(e) => setNewGroupDesc(e.target.value)} />
                          {/* Show general error message inside modal if not field specific */}
                          {error && !error.includes('name') && <Alert severity="error" sx={{mt: 2}}>{error}</Alert>}
@@ -561,7 +535,7 @@ function UserManagement() {
 
              {/* --- Edit Group Modal --- */}
             <Dialog open={showEditModal} onClose={handleCloseEditModal}>
-                <DialogTitle>Edit Group: {groupToEdit?.name}</DialogTitle>
+                <DialogTitle>Edit Class: {groupToEdit?.name}</DialogTitle>
                  <Box component="form" onSubmit={handleUpdateGroup}>
                     <DialogContent>
                         <TextField autoFocus margin="dense" id="edit-group-name" label="Group Name" type="text" fullWidth variant="outlined" value={newGroupName} onChange={(e) => setNewGroupName(e.target.value)} required sx={{ mb: 2 }} error={!!error && error.includes('name')} helperText={error && error.includes('name') ? error : ''}/>
@@ -584,7 +558,7 @@ function UserManagement() {
                     ) : selectedGroup ? ( <Box>
                             <Typography variant="body1" gutterBottom> <strong>Description:</strong> {selectedGroup.description || <em>No description provided.</em>} </Typography>
                             <Typography variant="body1" gutterBottom> <strong>Created:</strong> {selectedGroup.created_at ? new Date(selectedGroup.created_at).toLocaleString() : 'N/A'} </Typography>
-                            <Typography variant="h6" sx={{ mt: 3, mb: 1 }}> Members ({selectedGroup.students?.length || 0}) </Typography>
+                            <Typography variant="h6" sx={{ mt: 3, mb: 1 }}> Students ({selectedGroup.students?.length || 0}) </Typography>
 
                             {/* --- Error/Success Messages specific to actions within this Modal --- */}
                             {error && <Alert severity="error" onClose={() => setError('')} sx={{ mb: 2 }}>{error}</Alert>}
@@ -593,7 +567,7 @@ function UserManagement() {
                             <Button variant="outlined" size="small" startIcon={<GroupAddIcon />} onClick={handleOpenAddStudentModal} sx={{ mb: 1 }} disabled={isSubmitting || studentsAvailableToAdd.length === 0} > Add Student </Button>
 
                             {selectedGroup.students && selectedGroup.students.length > 0 ? ( <Paper variant="outlined" sx={{ maxHeight: 250, overflow: 'auto' }}> <List dense> {selectedGroup.students.map((student) => ( <ListItem key={student.id} divider> <ListItemText primary={student.username} secondary={`ID: ${student.id}`} /> <ListItemSecondaryAction> <Tooltip title="Remove Student"> <IconButton edge="end" aria-label="remove" color="error" size="small" onClick={() => openRemoveStudentConfirm(student)} disabled={isSubmitting} > <PersonRemoveIcon fontSize='small'/> </IconButton> </Tooltip> </ListItemSecondaryAction> </ListItem> ))} </List> </Paper>
-                            ) : ( <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}> No students currently in this group. </Typography> )}
+                            ) : ( <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}> No students currently in this class. </Typography> )}
                         </Box>
                     ) : ( // Error message if selectedGroup failed to load initially
                          <Typography color="error">{error || 'Could not load group details.'}</Typography>
@@ -606,7 +580,7 @@ function UserManagement() {
 
              {/* --- Add Student Modal --- */}
              <Dialog open={showAddStudentModal} onClose={handleCloseAddStudentModal}>
-                 <DialogTitle>Add Student to Group: {selectedGroup?.name}</DialogTitle>
+                 <DialogTitle>Add Student to Class: {selectedGroup?.name}</DialogTitle>
                  <Box component="form" onSubmit={handleAddStudent}>
                     <DialogContent sx={{minWidth: 300}}>
                         <FormControl fullWidth margin="dense" required error={!!error}>
@@ -614,7 +588,7 @@ function UserManagement() {
                             <Select labelId="select-student-label" id="select-student" value={studentToAdd} label="Select Student" onChange={(e) => setStudentToAdd(e.target.value)} disabled={studentsAvailableToAdd.length === 0 || isSubmitting} >
                                 <MenuItem value="" disabled> <em>-- Select a student --</em> </MenuItem>
                                 {studentsAvailableToAdd.length > 0 ? ( studentsAvailableToAdd.map((student) => ( <MenuItem key={student.id} value={student.id}> {student.username} (ID: {student.id}) </MenuItem> ))
-                                ) : ( <MenuItem value="" disabled> <em>All available students are in this group.</em> </MenuItem> )}
+                                ) : ( <MenuItem value="" disabled> <em>All available students are in this class.</em> </MenuItem> )}
                             </Select>
                              {/* Show error message inside modal */}
                              {error && <DialogContentText color="error" sx={{mt: 1}}>{error}</DialogContentText>}
@@ -631,7 +605,7 @@ function UserManagement() {
             <Dialog open={Boolean(groupToDelete)} onClose={closeDeleteConfirm} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description" >
                 <DialogTitle id="alert-dialog-title"> Confirm Deletion </DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-description"> Are you sure you want to delete the group "{groupToDelete?.name}"? This action cannot be undone. Students will be removed from the group but their accounts will remain. </DialogContentText>
+                    <DialogContentText id="alert-dialog-description"> Are you sure you want to delete the class "{groupToDelete?.name}"? This action cannot be undone. Students will be removed from the class but their accounts will remain. </DialogContentText>
                     {/* Show error message inside dialog */}
                     {error && <Alert severity="error" sx={{mt: 2}}>{error}</Alert>}
                 </DialogContent>
@@ -645,7 +619,7 @@ function UserManagement() {
              <Dialog open={Boolean(studentToRemove)} onClose={closeRemoveStudentConfirm} >
                 <DialogTitle>Confirm Removal</DialogTitle>
                 <DialogContent>
-                    <DialogContentText> Are you sure you want to remove student "{studentToRemove?.username}" from the group "{selectedGroup?.name}"? </DialogContentText>
+                    <DialogContentText> Are you sure you want to remove student "{studentToRemove?.username}" from the class "{selectedGroup?.name}"? </DialogContentText>
                     {/* Show error message inside dialog */}
                     {error && <Alert severity="error" sx={{mt: 2}}>{error}</Alert>}
                  </DialogContent>

@@ -206,8 +206,7 @@ function AdminDashboard() {
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}> {/* Use flexbox for button layout */}
                     <Button variant="contained" startIcon={<AddCircleOutlineIcon />} onClick={() => navigate('/admin/exams/new')}> Create New Exam </Button>
                     <Button variant="outlined" startIcon={<AssessmentIcon />} onClick={() => navigate('/admin/exams')}> Manage Exams </Button>
-                    <Button variant="outlined" startIcon={<PersonAddIcon />} onClick={() => navigate('/admin/usergroups')}> Manage Students </Button> {/* Asumsi user mgmt ada di usergroups */}
-                    <Button variant="outlined" startIcon={<GroupsIcon />} onClick={() => navigate('/admin/usergroups')}> Manage Groups </Button>
+                    <Button variant="outlined" startIcon={<GroupsIcon />} onClick={() => navigate('/admin/usergroups')}> Manage Class </Button>
                 </Box>
             </Paper>
 

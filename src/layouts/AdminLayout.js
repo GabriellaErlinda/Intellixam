@@ -37,7 +37,7 @@ function AdminLayout({ onLogout }) {
   const menuItems = [
     { text: 'Dashboard', icon: <DashboardIcon />, path: '/admin' },
     { text: 'Exams', icon: <AssignmentIcon />, path: '/admin/exams' },
-    { text: 'Users', icon: <GroupIcon />, path: '/admin/usergroups' },
+    { text: 'Classes', icon: <GroupIcon />, path: '/admin/usergroups' },
     // { text: 'Question Bank', icon: <QuestionAnswerIcon />, path: '/admin/questions' },
     // { text: 'Users', icon: <PeopleIcon />, path: '/admin/users' },
     // { text: 'Results', icon: <BarChartIcon />, path: '/admin/results' },

@@ -303,13 +303,13 @@ function StudentProfile() {
                     <List disablePadding>
                         {/* --- Name Item --- */}
                         <ListItem disablePadding>
-                            <ListItemButton /*onClick={handleOpenUsernameModal}*/ sx={{ py: 1.5 }}>
+                            <ListItem /*onClick={handleOpenUsernameModal}*/ sx={{ py: 1.5 }}>
                                 <ListItemIcon sx={{ minWidth: 40 }}> <AbcIcon /> </ListItemIcon>
                                 <ListItemText
                                     primary="Name"
                                     secondary={`Current: ${profileData.username}`}
                                 />
-                            </ListItemButton>
+                            </ListItem>
                         </ListItem>
                         <Divider component="li" />
                         {/* --- Password Item --- */}
