@@ -328,9 +328,9 @@ function StudentProfile() {
 
             {/* --- MODALS --- */}
 
-            {/* Edit Username Modal */}
+            {/* Edit Username Modal
             <Dialog open={isUsernameModalOpen} onClose={handleCloseUsernameModal} maxWidth="xs" fullWidth>
-                {/* ... (DialogTitle, DialogContent with TextField, DialogActions with Buttons as before) ... */}
+                {/* ... (DialogTitle, DialogContent with TextField, DialogActions with Buttons as before) ... 
                  <DialogTitle>Edit Username</DialogTitle>
                 <DialogContent>
                     <TextField
@@ -361,7 +361,7 @@ function StudentProfile() {
                         {isUpdating ? 'Saving...' : 'Save Username'}
                     </Button>
                 </DialogActions>
-            </Dialog>
+            </Dialog>*/}
 
             {/* Edit Password Modal */}
             <Dialog open={isPasswordModalOpen} onClose={handleClosePasswordModal} maxWidth="xs" fullWidth>
