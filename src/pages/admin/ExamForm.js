@@ -476,29 +476,53 @@ function ExamForm() {
                     <Grid item xs={12} sm={6} md={3}>
                         <FormControl fullWidth disabled={isSaving || isLoadingGroups}>
                             <InputLabel id="assign-groups-label">Assign to Groups (Optional)</InputLabel>
-                            <Select
-                                labelId="assign-groups-label"
-                                id="assign-groups-select"
-                                multiple
-                                value={selectedGroupIds}
-                                onChange={handleGroupSelectionChange}
-                                input={<OutlinedInput label="Assign to Groups (Optional)" />} // Required for label
-                                renderValue={(selected) => (
-                                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                        {/* Find group names from availableGroups based on selected IDs */}
-                                        {selected.map((id) => {
-                                             const group = availableGroups.find(g => g.id === id);
-                                             // Display name if found, otherwise ID as fallback
-                                             return <Chip key={id} label={group ? group.name : `ID: ${id}`} size="small" />;
-                                         })}
-                                    </Box>
-                                )}
-                                MenuProps={{ PaperProps: { style: { maxHeight: 224 }}}}
+                            <Select labelId="assign-groups-label" id="assign-groups-select" multiple value={selectedGroupIds} onChange={handleGroupSelectionChange}
+                                input={<OutlinedInput label="Assign to Groups (Optional)" />}
+                                renderValue={(selected) => { // selected is an array of IDs
+                                    if (selected.length === 0) {
+                                        return <Box component="span" sx={{ opacity: 0 }}> </Box>;
+                                    }
+
+                                    const MAX_VISIBLE_CHIPS = 1;
+                                    
+                                    const chipsToRender = selected.slice(0, MAX_VISIBLE_CHIPS).map(id => {
+                                        const group = availableGroups.find(g => g.id === id);
+                                        return (
+                                            <Chip
+                                                key={id}
+                                                label={group ? group.name : `ID: ${id}`}
+                                                size="small"
+                                            />
+                                        );
+                                    });
+
+                                    const remainingCount = selected.length - MAX_VISIBLE_CHIPS;
+
+                                    return (
+                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, overflow: 'hidden' }}>
+                                            {chipsToRender}
+                                            {remainingCount > 0 && (
+                                                <Typography
+                                                    variant="body2"
+                                                    component="span"
+                                                    sx={{ whiteSpace: 'nowrap', pl: chipsToRender.length > 0 ? 0.5 : 0 }}
+                                                >
+                                                    +{remainingCount} more
+                                                </Typography>
+                                            )}
+                                        </Box>
+                                    );
+                                }}
+                                MenuProps={{
+                                    PaperProps: {
+                                        style: {
+                                            maxHeight: 224,
+                                        }
+                                    }
+                                }}
                             >
-                                {/* Handle loading/empty states */}
                                 {isLoadingGroups && <MenuItem disabled><CircularProgress size={20} sx={{mx: 'auto', display:'block'}}/></MenuItem>}
                                 {!isLoadingGroups && availableGroups.length === 0 && <MenuItem disabled>No groups available</MenuItem>}
-                                {/* Map available groups */}
                                 {availableGroups.map((group) => (
                                     <MenuItem key={group.id} value={group.id}>
                                         {group.name}
