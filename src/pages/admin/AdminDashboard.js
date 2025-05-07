@@ -258,7 +258,7 @@ function AdminDashboard() {
                     </Paper>
                 </Grid>
 
-                {/* Chart Placeholder */}
+                {/* Chart Placeholder
                  <Grid item xs={12} md={6}>
                      <Paper elevation={2} sx={{ p: 2, height: { xs: 300, md: 350 } }}>
                         <Box sx={{display: 'flex', alignItems: 'center', mb: 1}}>
@@ -270,7 +270,7 @@ function AdminDashboard() {
                             <Typography variant="body2">(Chart Placeholder - To be implemented)</Typography>
                         </Box>
                     </Paper>
-                </Grid>
+                </Grid> */}
             </Grid>
         </Box>
     );
