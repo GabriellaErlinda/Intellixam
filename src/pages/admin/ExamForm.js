@@ -461,7 +461,16 @@ function ExamForm() {
                     <Grid item xs={12} md={6}><TextField fullWidth required name="subject" label="Subject" value={examDetails.subject} onChange={handleDetailChange} disabled={isSaving} /></Grid>
                     <Grid item xs={12} sm={6} md={3}><TextField fullWidth required name="duration" label="Duration (min)" type="number" value={examDetails.duration} onChange={handleDetailChange} disabled={isSaving} InputProps={{ inputProps: { min: 1 } }} /></Grid>
                     <Grid item xs={12} sm={6} md={3}><TextField fullWidth required name="allowed_attempts" label="Allowed Attempts" type="number" value={examDetails.allowed_attempts} onChange={handleDetailChange} disabled={isSaving} InputProps={{ inputProps: { min: 1 } }} /></Grid>
-                    <Grid item xs={12} sm={6} md={3}><FormControl fullWidth required disabled={isSaving}><InputLabel id="status-select-label">Status</InputLabel><Select labelId="status-select-label" name="status" label="Status" value={examDetails.status} onChange={handleDetailChange}><MenuItem value="Draft">Draft</MenuItem><MenuItem value="Published">Published</MenuItem><MenuItem value="Archived">Archived</MenuItem></Select></FormControl></Grid>
+                    <Grid item xs={12} sm={6} md={3}>
+                        <FormControl fullWidth required disabled={isSaving}>
+                            <InputLabel id="status-select-label">Status</InputLabel>
+                            <Select labelId="status-select-label" name="status" label="Status" value={examDetails.status} onChange={handleDetailChange}>
+                                <MenuItem value="Draft">Draft</MenuItem>
+                                <MenuItem value="Published">Published</MenuItem>
+                                <MenuItem value="Archived">Archived</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid>
 
                     {/* Assign to Groups Select */}
                     <Grid item xs={12} sm={6} md={3}>
@@ -484,7 +493,7 @@ function ExamForm() {
                                          })}
                                     </Box>
                                 )}
-                                MenuProps={{ PaperProps: { style: { maxHeight: 224, width: 250 }}}}
+                                MenuProps={{ PaperProps: { style: { maxHeight: 224 }}}}
                             >
                                 {/* Handle loading/empty states */}
                                 {isLoadingGroups && <MenuItem disabled><CircularProgress size={20} sx={{mx: 'auto', display:'block'}}/></MenuItem>}
