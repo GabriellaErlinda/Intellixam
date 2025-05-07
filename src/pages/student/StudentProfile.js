@@ -126,7 +126,7 @@ function StudentProfile() {
 
     // --- API Call Handlers ---
 
-    // Handle Username Update
+    /* Handle Username Update
     const handleUpdateUsername = async () => {
         if (!newUsername || newUsername.trim().length < 3) {
             setUpdateStatus({ open: true, message: 'Username must be at least 3 characters long.', severity: 'warning' });
@@ -169,7 +169,7 @@ function StudentProfile() {
         } finally {
             setIsUpdating(false);
         }
-    };
+    };*/
 
     // Handle Password Update
     const handleUpdatePassword = async () => {
@@ -302,8 +302,8 @@ function StudentProfile() {
 
                     <List disablePadding>
                         {/* --- Name Item --- */}
-                        <ListItem disablePadding secondaryAction={ <ChevronRightIcon sx={{ color: 'action.active' }} /> } >
-                            <ListItemButton onClick={handleOpenUsernameModal} sx={{ py: 1.5 }}>
+                        <ListItem disablePadding>
+                            <ListItemButton /*onClick={handleOpenUsernameModal}*/ sx={{ py: 1.5 }}>
                                 <ListItemIcon sx={{ minWidth: 40 }}> <AbcIcon /> </ListItemIcon>
                                 <ListItemText
                                     primary="Name"
