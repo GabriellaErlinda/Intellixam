@@ -11,6 +11,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
 import platformLogo from '../logo-myits-white.svg';
+import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 
 const drawerWidth = 240;
 
@@ -38,6 +39,7 @@ function AdminLayout({ onLogout }) {
     { text: 'Dashboard', icon: <DashboardIcon />, path: '/admin' },
     { text: 'Exams', icon: <AssignmentIcon />, path: '/admin/exams' },
     { text: 'Classes', icon: <GroupIcon />, path: '/admin/usergroups' },
+    { text: 'Users', icon: <PeopleOutlineIcon />, path: '/admin/users' },
     // { text: 'Question Bank', icon: <QuestionAnswerIcon />, path: '/admin/questions' },
     // { text: 'Users', icon: <PeopleIcon />, path: '/admin/users' },
     // { text: 'Results', icon: <BarChartIcon />, path: '/admin/results' },
