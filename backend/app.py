@@ -191,6 +191,7 @@ def create_app(config_class=Config):
                                 "allow_headers": ["Content-Type", "Authorization"],
                                 "supports_credentials": True }})
 
+    
 
     # --- Authentication Helper Functions ---
     # (create_token, token_required, admin_required, student_required remain the same)
@@ -1545,6 +1546,56 @@ def create_app(config_class=Config):
         except Exception as e:
              app.logger.exception(f"Unexpected error in analyze_frame endpoint for user {user_id}: {e}")
              return jsonify({"message": "Internal server error during frame analysis.", "head_pose_score": 0.0}), 500
+        
+    @app.route('/api/admin/users', methods=['GET'])
+    @admin_required
+    def get_admin_users():
+        """
+        Gets a paginated list of users for the admin panel,
+        with optional search and role filtering.
+        """
+        page = request.args.get('page', 1, type=int)
+        per_page = request.args.get('per_page', 15, type=int)
+        search_query = request.args.get('search', '').strip()
+        role_filter = request.args.get('role', None) # e.g., 'ADMIN', 'STUDENT'
+
+        try:
+            query = User.query
+
+            # Apply role filter if specified
+            if role_filter:
+                try:
+                    # Ensure the role filter matches RoleEnum values
+                    role_enum = RoleEnum[role_filter.upper()]
+                    query = query.filter_by(role=role_enum)
+                except KeyError:
+                    return jsonify({"message": f"Invalid role filter: {role_filter}. Valid roles are: {[r.name for r in RoleEnum]}"}), 400
+
+            # Apply search query to username
+            if search_query:
+                query = query.filter(User.username.ilike(f'%{search_query}%'))
+
+            # Paginate results, ordering by username
+            paginated_users = query.order_by(User.username.asc()).paginate(
+                page=page, per_page=per_page, error_out=False
+            )
+
+            users_data = []
+            for user in paginated_users.items:
+                # We'll need a to_dict method for the User model
+                users_data.append(user.to_dict(include_groups=True)) # Include groups if frontend needs it for user lists
+
+            return jsonify({
+                "users": users_data,
+                "total": paginated_users.total,
+                "pages": paginated_users.pages,
+                "currentPage": paginated_users.page,
+                "perPage": paginated_users.per_page
+            }), 200
+
+        except Exception as e:
+            app.logger.exception(f"Error fetching admin users: {e}")
+            return jsonify({"message": "Internal server error fetching users."}), 500
 
     return app
 

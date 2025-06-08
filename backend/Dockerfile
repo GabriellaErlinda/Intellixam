@@ -30,17 +30,17 @@ RUN useradd -m -u 1000 flaskuser && chown -R flaskuser:flaskuser /app
 USER flaskuser
 
 # Expose port 8080 (updated for Google Cloud)
-EXPOSE 8080
+EXPOSE 5001
 
 # Set environment variables
 ENV FLASK_APP=app.py
 ENV PYTHONPATH=/app
 ENV PYTHONUNBUFFERED=1
-ENV PORT=8080
+ENV PORT=5001
 
 # Health check (updated port)
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:8080/', timeout=10)" || exit 1
+    CMD python -c "import requests; requests.get('http://localhost:5001/', timeout=10)" || exit 1
 
 # Run the application
 CMD ["python", "app.py"]
