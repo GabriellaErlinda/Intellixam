@@ -1619,7 +1619,7 @@ def home():
 
 if __name__ == '__main__':
     # Use environment variable for port or default to 5001
-    port = int(os.environ.get('PORT', 5001))
+    port = int(os.environ.get('PORT', 8080))
     # Debug should be False in production, controlled by an environment variable
     debug_mode = os.environ.get('FLASK_DEBUG', 'False').lower() in ('true', '1', 't')
     app.run(debug=debug_mode, host='0.0.0.0', port=port) # Listen on all interfaces if needed for containerization/external access
