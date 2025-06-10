@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Base URL for your backend API
-const API_URL = 'https://capstoneimgnew3-343455652978.asia-southeast2.run.app/api'; // Your Flask backend URL
+const API_URL = 'https://capstoneimgnew4-343455652978.asia-southeast2.run.app/api'; // Your Flask backend URL
 
 const apiClient = axios.create({
   baseURL: API_URL,

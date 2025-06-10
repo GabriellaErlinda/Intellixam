@@ -13,7 +13,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
-import platformLogo from '../logo-myits-white.svg';
+import platformLogo from '../assets/intellixam.png';
 
 // Standard width for the sidebar drawer
 const drawerWidth = 240;
@@ -55,16 +55,14 @@ function StudentLayout({ onLogout }) {
             {/* Toolbar spacer in the drawer */}
             <Toolbar sx={{
                 justifyContent: 'center',   // Center the content (logo + text group)
-                bgcolor: theme.palette.primary.main,
-                color: theme.palette.primary.contrastText,
                 alignItems: 'center' // Ensure items align vertically in the center
             }}>
                 {/* Logo using Box component */}
                 <Box
                     component="img"
                     sx={{
-                        height: 30, // Adjust height as needed
-                        mr: 1.5,    // Add margin to the right (theme spacing units)
+                        height: 50, // Adjust height as needed
+                        mr: 0,    // Add margin to the right (theme spacing units)
                         // verticalAlign: 'middle' // Alternative alignment if needed
                     }}
                     alt="MyITS Platform Logo" // Important for accessibility
@@ -72,7 +70,7 @@ function StudentLayout({ onLogout }) {
                 />
 
                 {/* Your Title */}
-                <Typography variant="h6" noWrap component="div">
+                <Typography variant="h6" noWrap component="div" sx={{ color: 'black' }}>
                     Exam
                 </Typography>
             </Toolbar>
@@ -134,7 +132,7 @@ function StudentLayout({ onLogout }) {
                     backgroundColor: theme.palette.background.paper,
                     color: theme.palette.text.primary,
                 }}
-                elevation={1}
+                elevation={0}
             >
                <Toolbar>
                    {/* Hamburger icon for mobile drawer */}

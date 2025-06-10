@@ -191,7 +191,6 @@ def create_app(config_class=Config):
                                 "allow_headers": ["Content-Type", "Authorization"],
                                 "supports_credentials": True }})
 
-    
 
     # --- Authentication Helper Functions ---
     # (create_token, token_required, admin_required, student_required remain the same)
@@ -207,6 +206,9 @@ def create_app(config_class=Config):
     def token_required(f):
         @wraps(f)
         def decorated(*args, **kwargs):
+            if request.method == 'OPTIONS':
+                return f(*args, **kwargs)
+            
             token = None
             auth_header = request.headers.get('Authorization')
             if auth_header and auth_header.startswith('Bearer '):
@@ -892,6 +894,102 @@ def create_app(config_class=Config):
             app.logger.exception(f"Admin: Error fetching student list: {e}")
             return jsonify({"message": "Internal server error fetching students."}), 500
 
+    @app.route('/api/admin/users', methods=['GET'])
+    @admin_required
+    def get_admin_users():
+        """Gets a paginated list of all users for admin management."""
+        try:
+            page = request.args.get('page', 1, type=int)
+            per_page = request.args.get('per_page', 15, type=int)
+            
+            # Limit per_page to prevent abuse
+            per_page = min(per_page, 100)
+            
+            users_query = User.query.order_by(User.id)
+            paginated_users = users_query.paginate(
+                page=page, 
+                per_page=per_page, 
+                error_out=False
+            )
+            
+            users_data = []
+            for user in paginated_users.items:
+                users_data.append({
+                    'id': user.id,
+                    'username': user.username,
+                    'role': user.role.value if hasattr(user.role, 'value') else user.role,
+                    'created_at': user.created_at.isoformat() if user.created_at else None
+                })
+            
+            return jsonify({
+                'users': users_data,
+                'total': paginated_users.total,
+                'current_page': page,
+                'per_page': per_page,
+                'pages': paginated_users.pages,
+                'has_next': paginated_users.has_next,
+                'has_prev': paginated_users.has_prev
+            }), 200
+            
+        except Exception as e:
+            app.logger.exception(f"Error fetching users list: {e}")
+            return jsonify({"message": "Error fetching users list."}), 500
+        
+    @app.route('/api/admin/users/import_csv', methods=['POST'])
+    @admin_required
+    def import_users_csv():
+        """Import users from CSV data sent in request body."""
+        try:
+            data = request.get_json()
+            if not data or 'usernames' not in data:
+                return jsonify({"message": "No usernames provided"}), 400
+            
+            usernames = data['usernames']
+            if not isinstance(usernames, list):
+                return jsonify({"message": "Usernames must be a list"}), 400
+            
+            added_count = 0
+            failed_imports = []
+            
+            for username in usernames:
+                username = username.strip()
+                if not username:
+                    continue
+                    
+                # Check if user already exists
+                existing_user = User.query.filter_by(username=username).first()
+                if existing_user:
+                    failed_imports.append({
+                        'username': username,
+                        'reason': 'User already exists'
+                    })
+                    continue
+                
+                try:
+                    # Create new user with username as password (as per your frontend logic)
+                    new_user = User(username=username, role=RoleEnum.STUDENT)
+                    new_user.set_password(username)  # Password same as username
+                    db.session.add(new_user)
+                    added_count += 1
+                except Exception as e:
+                    failed_imports.append({
+                        'username': username,
+                        'reason': f'Error creating user: {str(e)}'
+                    })
+            
+            if added_count > 0:
+                db.session.commit()
+            
+            return jsonify({
+                'message': f'Import completed. Added {added_count} users.',
+                'added_count': added_count,
+                'failed_imports': failed_imports
+            }), 200
+            
+        except Exception as e:
+            db.session.rollback()
+            app.logger.exception(f"Error importing users: {e}")
+            return jsonify({"message": "Error importing users"}), 500
 
     # --- Student Routes ---
     @app.route('/api/student/exams/available', methods=['GET'])
@@ -1503,6 +1601,7 @@ def create_app(config_class=Config):
             app.logger.exception(f"Database error updating profile for user {student.id}: {e}")
             return jsonify({"message": "An internal error occurred while saving profile changes."}), 500
 
+    
 
     # --- Proctoring Analysis Route ---
     @app.route('/api/proctor/analyze_frame', methods=['POST'])
@@ -1546,56 +1645,6 @@ def create_app(config_class=Config):
         except Exception as e:
              app.logger.exception(f"Unexpected error in analyze_frame endpoint for user {user_id}: {e}")
              return jsonify({"message": "Internal server error during frame analysis.", "head_pose_score": 0.0}), 500
-        
-    @app.route('/api/admin/users', methods=['GET'])
-    @admin_required
-    def get_admin_users():
-        """
-        Gets a paginated list of users for the admin panel,
-        with optional search and role filtering.
-        """
-        page = request.args.get('page', 1, type=int)
-        per_page = request.args.get('per_page', 15, type=int)
-        search_query = request.args.get('search', '').strip()
-        role_filter = request.args.get('role', None) # e.g., 'ADMIN', 'STUDENT'
-
-        try:
-            query = User.query
-
-            # Apply role filter if specified
-            if role_filter:
-                try:
-                    # Ensure the role filter matches RoleEnum values
-                    role_enum = RoleEnum[role_filter.upper()]
-                    query = query.filter_by(role=role_enum)
-                except KeyError:
-                    return jsonify({"message": f"Invalid role filter: {role_filter}. Valid roles are: {[r.name for r in RoleEnum]}"}), 400
-
-            # Apply search query to username
-            if search_query:
-                query = query.filter(User.username.ilike(f'%{search_query}%'))
-
-            # Paginate results, ordering by username
-            paginated_users = query.order_by(User.username.asc()).paginate(
-                page=page, per_page=per_page, error_out=False
-            )
-
-            users_data = []
-            for user in paginated_users.items:
-                # We'll need a to_dict method for the User model
-                users_data.append(user.to_dict(include_groups=True)) # Include groups if frontend needs it for user lists
-
-            return jsonify({
-                "users": users_data,
-                "total": paginated_users.total,
-                "pages": paginated_users.pages,
-                "currentPage": paginated_users.page,
-                "perPage": paginated_users.per_page
-            }), 200
-
-        except Exception as e:
-            app.logger.exception(f"Error fetching admin users: {e}")
-            return jsonify({"message": "Internal server error fetching users."}), 500
 
     return app
 

@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 // Import RouterLink for navigation links within the app
 import { Link as RouterLink } from 'react-router-dom';
 // Import MUI components
-import { Avatar, Button, TextField, Link, Grid, Box, Typography, Container, Paper, Alert } from '@mui/material';
-// Import MUI Icon
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { Button, TextField, Link, Grid, Box, Typography, Container, Paper, Alert } from '@mui/material';
+// Import Logo
+import logoText from '../assets/intellixam-text.png';
 // Import API client helper and Auth context hook
 import apiClient from '../api';
 import { useAuth } from '../App';
@@ -63,10 +63,16 @@ function LoginPage() {
     <Container component="main" maxWidth="xs">
       {/* Paper component for visual grouping and elevation */}
       <Paper elevation={3} sx={{ marginTop: 8, padding: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', borderRadius: 2 }}>
-        {/* Avatar with lock icon */}
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          <LockOutlinedIcon />
-        </Avatar>
+        {/* Logo Image */}
+        <Box
+          component="img"
+          sx={{
+            my: 0,
+            height: 90, // Adjust height as needed
+          }}
+          alt="Intellixam Logo"
+          src={logoText}
+        />
         {/* Title */}
         <Typography component="h1" variant="h5">
           Sign in
