@@ -34,17 +34,8 @@ Follow these steps to set up and run the project locally.
         pip install -r requirements.txt
         ```
         
-    *   Initialize the database (creates `instance/database.db` and adds default users/exams):
-        ```bash
-        flask init-db
-        ```
 
 3.  **Set up Frontend:**
-    *   Navigate to the frontend directory from the project root:
-        ```bash
-        cd ../src
-        # Or if you are still in backend: cd ../frontend
-        ```
     *   Install Node.js dependencies:
         ```bash
         npm install
@@ -74,6 +65,4 @@ You need **two separate terminals** open to run both the backend and frontend co
 **Accessing the Application:**
 
 *   Open `http://localhost:3000` in your web browser.
-*   Use the default credentials or the sign-up page:
-    *   **Admin:** `admin` / `admin123`
-    *   **Student:** `student` / `student123` (or newly registered students)
+*   Create new account on the sign-up page:
