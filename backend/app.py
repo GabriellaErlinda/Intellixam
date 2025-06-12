@@ -11,9 +11,9 @@ import numpy as np
 # import mediapipe as mp
 import io
 import logging
-import json # <-- Import json
-import tempfile # <-- Import tempfile
-import atexit # <-- Import atexit for cleanup
+import json
+import tempfile
+import atexit
 
 # --- Cloud SQL Connector Imports ---
 import sqlalchemy
@@ -24,7 +24,7 @@ from models import (
     db, User, Exam, Question, RoleEnum, ExamStatusEnum, ExamSubmission,
     UserGroup, NotificationLog, NotificationType, SubmissionStatusEnum
 )
-from config import Config # <-- Ensure Config is imported
+from config import Config
 
 # Import utilities from SQLAlchemy
 from sqlalchemy.orm import joinedload, selectinload
@@ -51,7 +51,7 @@ except ImportError:
 
 # --- Helper Function for Cloud SQL Connection ---
 connector = None
-_db_conn = None # Cache the connection within the app context if needed, but connector handles pooling
+_db_conn = None
 
 def getconn() -> sqlalchemy.engine.base.Connection:
     """
@@ -73,7 +73,7 @@ def getconn() -> sqlalchemy.engine.base.Connection:
             user=Config.DB_USER,
             password=Config.DB_PASS,
             db=Config.DB_NAME,
-            ip_type=IPTypes.PUBLIC # Or IPTypes.PRIVATE
+            ip_type=IPTypes.PUBLIC
         )
         return conn
     except Exception as e:
@@ -89,8 +89,8 @@ def _cleanup_temp_sa_file():
     if _temp_sa_key_file and os.path.exists(_temp_sa_key_file.name):
         try:
             logging.info(f"Cleaning up temporary service account key file: {_temp_sa_key_file.name}")
-            _temp_sa_key_file.close() # Ensure it's closed
-            os.remove(_temp_sa_key_file.name) # Then remove
+            _temp_sa_key_file.close()
+            os.remove(_temp_sa_key_file.name)
             _temp_sa_key_file = None
         except Exception as e:
             logging.error(f"Error cleaning up temporary SA key file {_temp_sa_key_file.name}: {e}", exc_info=True)
@@ -107,16 +107,13 @@ def _setup_service_account_credentials(config):
         logging.info("Found GCP_SERVICE_ACCOUNT_KEY_JSON in config. Setting up temporary credentials file.")
         try:
             # Validate if it's actually JSON (optional but good)
-            # json.loads(sa_key_json_string) # This would raise error if invalid
+            # json.loads(sa_key_json_string) (This would raise error if invalid)
 
             # Create a temporary file securely
-            # Use delete=False because we need the file path to persist
-            # while the app is running. We'll clean it up with atexit.
             _temp_sa_key_file = tempfile.NamedTemporaryFile(mode='w+', encoding='utf-8', delete=False)
 
             _temp_sa_key_file.write(sa_key_json_string)
-            _temp_sa_key_file.flush() # Ensure content is written to disk
-            # temp_file.close() # Keep open? No, path is needed. Close handled by cleanup.
+            _temp_sa_key_file.flush() 
 
             sa_key_file_path = _temp_sa_key_file.name
             logging.info(f"Setting GOOGLE_APPLICATION_CREDENTIALS to temporary file: {sa_key_file_path}")
@@ -150,10 +147,8 @@ def create_app(config_class=Config):
                         format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
     app.logger.info(f"Flask App starting with log level {log_level}")
 
-    # --- !!! Setup Service Account Credentials FIRST !!! ---
-    # This needs to run BEFORE the connector might be initialized implicitly or explicitly
+    # --- !!! Setup Service Account Credentials ---
     _setup_service_account_credentials(app.config)
-    # --- !!! End Service Account Setup !!! ---
 
 
     # --- Configure SQLAlchemy to use Cloud SQL Connector ---
@@ -182,7 +177,7 @@ def create_app(config_class=Config):
         app.logger.error(f"Error creating instance path {app.instance_path}: {e}", exc_info=True)
 
 
-    # Initialize SQLAlchemy AFTER setting engine options and SA creds
+    # Initialize SQLAlchemy
     db.init_app(app)
 
     # Initialize CORS
@@ -218,12 +213,12 @@ def create_app(config_class=Config):
                 return jsonify({'message': 'Token is missing'}), 401
             try:
                 data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
-                current_user = db.session.get(User, data['user_id']) # Use session.get for primary key lookup
+                current_user = db.session.get(User, data['user_id'])
                 if not current_user:
                      app.logger.warning(f"User with ID {data['user_id']} (from token) not found in database.")
                      return jsonify({'message': 'User not found'}), 401
                 g.current_user = current_user
-                g.current_role = data['role'] # Store role from token
+                g.current_role = data['role']
                 app.logger.debug(f"Token validated for user {g.current_user.username} (Role: {g.current_role})")
             except jwt.ExpiredSignatureError:
                 app.logger.info("Token has expired.")
@@ -232,7 +227,7 @@ def create_app(config_class=Config):
                 app.logger.warning(f"Token is invalid: {e}")
                 return jsonify({'message': 'Token is invalid'}), 401
             except Exception as e:
-                 app.logger.exception(f"Unexpected error during token validation: {e}") # Log full exception
+                 app.logger.exception(f"Unexpected error during token validation: {e}")
                  return jsonify({'message': 'Token validation error'}), 401
             return f(*args, **kwargs)
         return decorated
@@ -257,12 +252,7 @@ def create_app(config_class=Config):
              return f(*args, **kwargs)
         return decorated
 
-    # --- API Routes ---
-    # ALL your existing API routes (@app.route(...)) remain unchanged below this point.
-    # They will now use the database connection established using the
-    # service account credentials (if provided) or default credentials.
 
-    # ... (Keep all your existing routes: /api/login, /api/register, admin routes, student routes, etc.) ...
     # Authentication Routes
     @app.route('/api/login', methods=['POST'])
     def login():
@@ -341,7 +331,6 @@ def create_app(config_class=Config):
     def get_admin_exams():
         """Gets a list of all exams (basic details)."""
         try:
-            # Eager load assigned groups count if needed often, else query separately or use relationship count
             exams = Exam.query.order_by(Exam.created_at.desc()).all()
             # Note: exam.to_dict now calculates question_count
             return jsonify([exam.to_dict(include_questions=False, include_groups=False) for exam in exams])
@@ -546,10 +535,7 @@ def create_app(config_class=Config):
         """Gets details for a specific exam, including questions and assigned groups."""
         app.logger.info(f"Admin request: Fetching details for exam ID: {exam_id}")
         try:
-            # Use session.get with joinedload options
-            # selectinload might be better for one-to-many (questions) if needed later
             exam = db.session.get(Exam, exam_id, options=[
-            # db.joinedload(Exam.questions), # This is dynamic, use selectinload or handle in to_dict
             joinedload(Exam.assigned_groups)
             ])
 
@@ -558,7 +544,6 @@ def create_app(config_class=Config):
                 return jsonify({"message": "Exam not found"}), 404
 
             app.logger.info(f"Admin request: Found exam '{exam.name}'. Serializing...")
-            # The robustness is now primarily within the to_dict method
             exam_dict = exam.to_dict(include_questions=True, include_groups=True)
             app.logger.info(f"Admin request: Serialization successful for exam {exam_id}.")
             return jsonify(exam_dict)
@@ -634,8 +619,6 @@ def create_app(config_class=Config):
 
             # Update Questions (Delete existing and Re-add new strategy)
             app.logger.info(f"Deleting existing questions for exam {exam_id} before update.")
-            # Use the relationship with cascade delete-orphan if configured
-            # Since exam.questions is dynamic, call delete() on the query object
             exam.questions.delete()
             db.session.flush() # Ensure deletes happen before adds
 
@@ -1333,7 +1316,7 @@ def create_app(config_class=Config):
         try:
             latest_submission = ExamSubmission.query.filter_by(user_id=student_id, exam_id=exam_id)\
                                                 .order_by(ExamSubmission.submitted_at.desc())\
-                                                .first() # Hanya yang paling baru
+                                                .first()
 
             attempts_taken_count = ExamSubmission.query.filter_by(user_id=student_id, exam_id=exam_id).count()
             app.logger.info(f"Total attempts counted for user {student_id}, exam {exam_id}: {attempts_taken_count}")
@@ -1423,10 +1406,10 @@ def create_app(config_class=Config):
             total_questions = 0
             if exam.questions:
                 try:
-                    total_questions = exam.questions.count() # Use count() on dynamic relationship
+                    total_questions = exam.questions.count() 
                 except Exception as q_count_err:
                     app.logger.warning(f"Could not count questions for cancellation record: {q_count_err}")
-                    # Fallback maybe? Or accept 0 if count fails?
+
                     total_questions = 0
 
             cancelled_submission = ExamSubmission(
@@ -1471,8 +1454,8 @@ def create_app(config_class=Config):
         try:
             limit = request.args.get('limit', 15, type=int) # Ambil 15 terbaru
             notifications = NotificationLog.query.options(
-                                joinedload(NotificationLog.user), # Eager load user
-                                joinedload(NotificationLog.exam)  # Eager load exam
+                                joinedload(NotificationLog.user),
+                                joinedload(NotificationLog.exam) 
                             )\
                             .order_by(NotificationLog.timestamp.desc())\
                             .limit(limit)\
@@ -1655,20 +1638,10 @@ app = create_app()
 # Simple route for testing if the app is up
 @app.route('/')
 def home():
-    # Test DB connection optionally on home route (can be slow)
-    # try:
-    #     db.session.execute(sqlalchemy.text('SELECT 1'))
-    #     db.session.commit() # or rollback()
-    #     return 'Hello, Flask is running and DB connection seems OK!'
-    # except Exception as e:
-    #     logging.error(f"DB connection check failed: {e}")
-    #     return 'Hello, Flask is running BUT DB connection failed!', 500
     return 'Hello, Flask is running!'
 
 
 if __name__ == '__main__':
-    # Use environment variable for port or default to 5001
     port = int(os.environ.get('PORT', 8080))
-    # Debug should be False in production, controlled by an environment variable
     debug_mode = os.environ.get('FLASK_DEBUG', 'False').lower() in ('true', '1', 't')
-    app.run(debug=debug_mode, host='0.0.0.0', port=port) # Listen on all interfaces if needed for containerization/external access
+    app.run(debug=debug_mode, host='0.0.0.0', port=port)
