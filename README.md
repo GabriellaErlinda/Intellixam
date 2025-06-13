@@ -40,8 +40,12 @@ The platform features:
 ## Use Case Diagram
 ![Intellixam Use Case Diagram](https://github.com/user-attachments/assets/e58c2a06-f678-433c-a858-1d900aa41ea8)
 
+## Entity Relationship Diagram
+![erd diagram intellixam](https://github.com/user-attachments/assets/ac19cde2-bf3a-4263-93b4-adb1ad7c4dd6)
+
 ## Tech Stack
 ![Screenshot 2025-06-12 222121](https://github.com/user-attachments/assets/0b7df924-edeb-42d3-87a6-6525027ed14f)
+
 
 
 ## Setup and Installation
