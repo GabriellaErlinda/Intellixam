@@ -680,38 +680,46 @@ def create_app(config_class=Config):
             app.logger.exception(f"Error deleting exam {exam_id}: {e}")
             return jsonify({"message":"Internal server error deleting exam."}), 500
 
-    # Exam Results
     @app.route('/api/admin/exams/<int:exam_id>/results', methods=['GET'])
     @admin_required
     def get_exam_results(exam_id):
         """Gets results (submissions) for a specific exam."""
         app.logger.info(f"Admin request: Fetching results for exam ID: {exam_id}")
-        # Check if exam exists first (optional, but good practice)
+        
+        # Check if exam exists first
         exam_exists = db.session.query(Exam.id).filter_by(id=exam_id).first()
         if not exam_exists:
             app.logger.warning(f"Admin request: Exam not found when fetching results for ID {exam_id}.")
             return jsonify({"message": "Exam not found"}), 404
+        
         try:
-            # Eager load student and exam details for each submission using joinedload (defined in model)
+            # Eager load student relationship (note: it's 'student', not 'user')
             submissions = ExamSubmission.query.options(
-                joinedload(ExamSubmission.user) # Eager load the 'user' relationship
-                ).filter_by(exam_id=exam_id)\
-                .order_by(ExamSubmission.submitted_at.desc())\
-                .all()
+                joinedload(ExamSubmission.student)  # FIXED: Use 'student' not 'user'
+            ).filter_by(exam_id=exam_id)\
+            .order_by(ExamSubmission.submitted_at.desc())\
+            .all()
+            
             app.logger.info(f"Found {len(submissions)} submissions for exam {exam_id}. Serializing...")
-            # The robustness is now mainly within ExamSubmission.to_dict()
+            
             results = []
             for sub in submissions:
-                # Call the existing to_dict method
+                # Use the existing to_dict method from your model
                 sub_dict = sub.to_dict()
-                # Check if sub.user exists (in case of data inconsistency or deleted user)
-                sub_dict['student_username'] = sub.user.username if sub.user else None
+                
+                # The to_dict method already includes 'username', but let's add student_username for compatibility
+                # FIXED: Use 'student' relationship instead of 'user'
+                sub_dict['student_username'] = sub.student.username if sub.student else None
+                
                 results.append(sub_dict)
+            
             app.logger.info(f"Serialization complete for exam {exam_id} results.")
             return jsonify(results), 200
+            
         except Exception as e:
             app.logger.exception(f"Error fetching results for exam {exam_id}: {e}")
             return jsonify({"message": "An internal server error occurred while fetching results."}), 500
+
 
     # User Group Management
     @app.route('/api/admin/usergroups', methods=['POST'])
